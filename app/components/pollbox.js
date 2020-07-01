@@ -64,7 +64,6 @@ class PollBox extends Component {
             this.bottom = p;
           }}
         />
-        />
       </div>
     );
   }

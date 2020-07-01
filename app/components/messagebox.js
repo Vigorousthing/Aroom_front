@@ -64,7 +64,6 @@ class MessageBox extends Component {
             this.bottom = p;
           }}
         />
-        />
         <button
           onClick={e => {
             this.setState({
