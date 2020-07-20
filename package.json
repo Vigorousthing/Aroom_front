@@ -66,6 +66,7 @@
   "dependencies": {
     "@babel/polyfill": "7.4.3",
     "@material-ui/core": "^4.10.2",
+    "bootstrap": "^4.5.0",
     "chalk": "^2.4.2",
     "compression": "1.7.4",
     "connected-react-router": "6.4.0",
@@ -82,6 +83,7 @@
     "minimist": "1.2.0",
     "prop-types": "15.7.2",
     "react": "16.8.6",
+    "react-bootstrap": "^1.2.2",
     "react-dom": "16.8.6",
     "react-helmet": "6.0.0-beta",
     "react-intl": "2.8.0",
@@ -91,7 +93,8 @@
     "redux-saga": "1.0.2",
     "reselect": "4.0.0",
     "sanitize.css": "8.0.0",
-    "styled-components": "4.2.0"
+    "styled-components": "4.2.0",
+    "swagger": "^0.7.5"
   },
   "devDependencies": {
     "@babel/cli": "7.4.3",

@@ -1,72 +1,83 @@
-import React, { Component } from 'react';
-import LikedMessage from 'components/likedmessage';
+import React, { Component, useEffect, useState } from 'react';
+import Message from 'components/message';
+// import { connect } from 'ngrok';
+import { connect } from 'react-redux'
+import { 
+  makeSelectMainMessageHistory,
+  makeSelectChatRoomFilter,
+} from '../containers/ChatRoomPage/selectors'
+import { createStructuredSelector } from 'reselect'
 
-class LikedBox extends Component {
-  constructor(props) {
-    super(props);
-    this.containerref = React.createRef();
-    // this.lasteleref = React.createRef();
-  }
+function LikedBox(props) {
 
-  state = {
-    liked_m_list: this.props.liked_m_list,
+  // console.log(props)
+  
+  var containerref = React.createRef();
+  var bottom = React.createRef();
+
+  const [preScrollHeight, setPreScrollHeight] = useState(null);
+  const [m_list, setM_list] = useState(props.m_list);
+
+  const outerStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      border: 'solid 1px green',
+      overflow: 'auto',
+      // width: '500px',
+      height: '50%',
   };
 
-  outerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    border: 'solid 1px',
-    overflow: 'auto',
-    width: '500px',
-    height: '500px',
-  };
-
-  componentDidMount() {
-    this.top.scrollIntoView({ behavior: 'auto' });
-  }
-
-  componentDidUpdate() {
-    if (this.containerref.scrollTop === 0) {
-      this.top.scrollIntoView({ behavior: 'auto' });
+  useEffect(() => {
+    if (preScrollHeight === null) {
+      bottom.scrollIntoView({behavior: 'auto'});
+    } else {
+      if (containerref.scrollTop + containerref.clientHeight === preScrollHeight) {
+        bottom.scrollIntoView({behavior: 'auto'});
+      }
     }
-  }
+    setPreScrollHeight(containerref.scrollHeight)
+  }, [props.mList])
 
-  render() {
-    return (
-      <div
-        ref={p => {
-          this.containerref = p;
+  return (
+    <div
+      ref={p => {containerref = p;}}
+      style={outerStyle}
+    >
+      {/* {props.mList.map((each, idx) => (
+        <Message info={each} key={`Message_${idx}`} />
+      ))} */}
+      {props.mList.map((each, idx) => ( 
+        (props.filter === each.behalfOf) ? <Message info={each} key={`Message_${idx}`} />:null))}
+      <div ref={p => {bottom = p;}}/>
+      <button
+        onClick={e => {
+          setM_list(
+            props.mList.concat({
+              m_id: 3,
+              type: 'text',
+              content: 'env',
+              post_time: '23:11',
+              behalfOf: 1,
+            })
+          )
         }}
-        style={this.outerStyle}
       >
-        <div
-          ref={p => {
-            this.top = p;
-          }}
-        />
-        {this.state.liked_m_list.map((each, idx) => (
-          <LikedMessage info={each} key={`Message_${idx}`} />
-        ))}
-        ))}
-        <button
-          onClick={e => {
-            this.setState({
-              liked_m_list: this.state.liked_m_list.concat({
-                m_id: 3,
-                type: 'text',
-                content: 'env',
-                post_time: '23:11',
-                behalf_of: 1,
-                liked_num: 111,
-              }),
-            });
-          }}
-        >
-          updatebutton
-        </button>
-      </div>
-    );
-  }
+        updatebutton
+      </button>
+    </div>
+  )
 }
 
-export default LikedBox;
+const mapStateToProps = createStructuredSelector({
+  mList: makeSelectMainMessageHistory(),
+  filter: makeSelectChatRoomFilter(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    sendTextMessageToServer: (message) => dispatch(sendTextMessageToServerAction(message))
+  };
+}
+
+export default connect(mapStateToProps)(LikedBox);

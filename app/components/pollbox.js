@@ -8,17 +8,17 @@ class PollBox extends Component {
   }
 
   state = {
-    poll_info_list: this.props.poll_info_list,
+    poll_info_list: [],
     preT_height: null,
   };
 
   outerStyle = {
     display: 'flex',
     flexDirection: 'column',
-    border: 'solid 1px',
+    border: 'solid 1px red',
     overflow: 'auto',
-    width: '500px',
-    height: '500px',
+    // width: '500px',
+    height: '50%',
   };
 
   componentDidMount() {

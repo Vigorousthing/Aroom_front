@@ -113,6 +113,8 @@ class PostPoll extends React.Component {
                     >
                     투표
                 </button>
+
+                
                 <Dialog open={this.state.open} onClose={this.handleClose}>
                     <DialogContent>
                         <TextField label="title" type="text" name="userName" value={this.state.title} 
